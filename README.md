@@ -6,13 +6,15 @@ Analog Gothic is a free, open-source 1-bit pixel icon kit inspired by medieval s
 
 <img src="./analog-gothic-kit.svg" style="background:#fff;">
 
-## Usage
+## Overview
+This icon kit embraces intentional simplicity, combining both filled and outlined pixel icons within the same set.
 
 All icons in this kit are pure SVGs, allowing flexibility across a wide range of use cases:
 - Standalone icons using `<img>`
 - SVG sprite references
 - Inline SVG (copy-paste directly into markup)
 
+## Usage
 Standalone icon:
 ```html
 <img class="ag-icon ag-icon-book" src="icons/ag-book.svg" alt="ag-book" />
