@@ -1,0 +1,34 @@
+{
+  "name": "analog-gothic",
+  "version": "1.1.0",
+  "description": "Analog Gothic is a free, open-source 1-bit pixel icon kit inspired by medieval symbolism and nature.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "optimize:svg": "node scripts/optimize-svgs.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/hastefuI/analog-gothic.git"
+  },
+  "keywords": [
+    "analog",
+    "font",
+    "gothic",
+    "ico",
+    "icon",
+    "icons",
+    "kit",
+    "nature",
+    "pixel",
+    "sprite"
+  ],
+  "author": "hasteful <github@hasteful.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hastefuI/analog-gothic/issues"
+  },
+  "homepage": "https://github.com/hastefuI/analog-gothic#readme",
+  "devDependencies": {
+    "svgo": "^4.0.0"
+  }
+}
