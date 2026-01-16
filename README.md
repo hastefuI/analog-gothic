@@ -1,4 +1,4 @@
-# Analog Gothic
+# Analog Gothic [![Release](https://img.shields.io/github/v/release/hastefuI/analog-gothic)](https://github.com/hastefuI/analog-gothic/releases) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/hastefuI/analog-gothic/blob/main/LICENSE)
 
 Analog Gothic is a free, open-source 1-bit pixel icon kit inspired by medieval symbolism and nature. 🗝️
 
