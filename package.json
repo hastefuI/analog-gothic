@@ -29,6 +29,9 @@
   },
   "homepage": "https://github.com/hastefuI/analog-gothic#readme",
   "devDependencies": {
-    "svgo": "^4.0.0"
+    "svgo": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
