@@ -1,0 +1,46 @@
+/* SVG Sprite Preview Styles */
+:root {
+  --cell: 112px;
+  --gap: 16px;
+  --fg: #111;
+  --muted: #666;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  margin: 24px;
+  color: var(--fg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--cell), 1fr));
+  gap: var(--gap);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.caption {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
