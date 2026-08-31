@@ -2,6 +2,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { optimize } from "svgo";
+import { svgoConfig } from "./svgo.config.mjs";
 
 const ENCODING = "utf8";
 
@@ -23,27 +24,6 @@ if (!inputDirRaw || !outputDirRaw) {
 const inputDir = path.resolve(process.cwd(), inputDirRaw);
 const outputDir = path.resolve(process.cwd(), outputDirRaw);
 
-const svgoConfig = {
-  multipass: true,
-  js2svg: { indent: 0, pretty: false },
-  plugins: [
-    {
-      name: "preset-default",
-      params: {
-        overrides: {
-          removeComments: { preservePatterns: [] },
-          cleanupNumericValues: { floatPrecision: 3 },
-          convertPathData: { floatPrecision: 3 },
-        },
-      },
-    },
-    "removeViewBox",
-    "removeXMLProcInst",
-    "removeDoctype",
-    "sortAttrs",
-    { name: "cleanupIds", params: { minify: true } },
-  ],
-};
 
 async function* walk(dir) {
   for (const entry of await fs.readdir(dir, { withFileTypes: true })) {

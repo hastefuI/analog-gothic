@@ -3,8 +3,13 @@
   "version": "1.1.0",
   "description": "Analog Gothic is a free, open-source 1-bit pixel icon kit inspired by medieval symbolism and nature.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "optimize:svg": "node scripts/optimize-svgs.mjs"
+    "test": "make verify",
+    "optimize:svg": "make optimize",
+    "add": "make add",
+    "build": "make build",
+    "artifacts": "make artifacts",
+    "verify": "make verify",
+    "preview": "make preview"
   },
   "repository": {
     "type": "git",
@@ -33,5 +38,13 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "icons",
+    "analog-gothic.svg",
+    "analog-gothic-kit.svg"
+  ]
 }
