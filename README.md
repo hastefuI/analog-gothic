@@ -1,4 +1,4 @@
-# Analog Gothic [![Release](https://img.shields.io/github/v/release/hastefuI/analog-gothic)](https://github.com/hastefuI/analog-gothic/releases) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/hastefuI/analog-gothic/blob/main/LICENSE)
+# Analog Gothic [![CI](https://github.com/hastefuI/analog-gothic/actions/workflows/ci.yml/badge.svg)](https://github.com/hastefuI/analog-gothic/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/hastefuI/analog-gothic)](https://github.com/hastefuI/analog-gothic/releases) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/hastefuI/analog-gothic/blob/main/LICENSE)
 
 Analog Gothic is a free, open-source 1-bit pixel icon kit inspired by medieval symbolism and nature. 🗝️
 
@@ -39,6 +39,21 @@ Inline SVG:
   ...
 </svg>
 ```
+
+## Development
+
+Requires Node.js 20+ and `make`. Run `make` to list every target.
+
+```sh
+make install     # install dependencies from the lockfile
+make add         # normalize + optimize stage/*.svg into icons/
+make artifacts   # regenerate analog-gothic.svg and analog-gothic-kit.svg
+make verify      # fail if the committed artifacts are stale
+make preview     # build dist/ and open it in a browser
+```
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full icon workflow and
+release process.
 
 ## Releases
 
