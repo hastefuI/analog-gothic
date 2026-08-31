@@ -42,7 +42,7 @@ Inline SVG:
 
 ## Development
 
-Requires Node.js 20+ and `make`. Run `make` to list every target.
+Requires Node.js 24+ and `make`. Run `make` to list every target.
 
 ```sh
 make install     # install dependencies from the lockfile

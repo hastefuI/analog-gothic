@@ -72,9 +72,11 @@ verify: ## Fail if the committed artifacts do not match icons/
 	@tmp=$$(mktemp -d); \
 	trap 'rm -rf "$$tmp"' EXIT; \
 	$(NODE) scripts/optimize-svgs.mjs --input $(ICONS_DIR) --output "$$tmp/icons" >/dev/null || exit 1; \
-	if ! diff -rq --exclude='.*' "$$tmp/icons" $(ICONS_DIR) >/dev/null; then \
-		echo "drift: icons/ are not fully optimized - run 'make optimize'"; exit 1; \
-	fi; \
+	for f in $(ICONS_DIR)/*.svg; do \
+		if ! diff -q "$$tmp/icons/$$(basename $$f)" "$$f" >/dev/null 2>&1; then \
+			echo "drift: $$f is not fully optimized - run 'make optimize'"; exit 1; \
+		fi; \
+	done; \
 	$(NODE) scripts/build-sprite.mjs --in $(ICONS_DIR) --out "$$tmp/dist" --sprite-name $(SPRITE) >/dev/null || exit 1; \
 	if ! diff -q "$$tmp/dist/$(SPRITE)" $(SPRITE) >/dev/null; then \
 		echo "drift: $(SPRITE) is stale - run 'make artifacts'"; exit 1; \

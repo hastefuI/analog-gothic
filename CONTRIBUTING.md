@@ -23,7 +23,7 @@ When reporting a bug, ensure steps to reproduce the issue are included.
 
 ## Build requirements
 
-- Node.js 20 or newer
+- Node.js 24 or newer
 - `make`
 
 Install dependencies from the lockfile:
