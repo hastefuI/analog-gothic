@@ -38,14 +38,6 @@ function kebabBase(filePath) {
     .toLowerCase();
 }
 
-function cleanForDisplay(base) {
-  return base
-    .replace(/\bicon\b/gi, '')
-    .replace(/-+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .toLowerCase();
-}
-
 function getIntrinsicSize(svg) {
   const vb = svg.match(/viewBox\s*=\s*"([^"]+)"/i);
   if (vb) {
@@ -120,8 +112,8 @@ async function main() {
   for (const p of paths) {
     const raw = await fs.readFile(p, 'utf8');
     const base = kebabBase(p);
-    const cleaned = cleanForDisplay(base);
-    const name = `${cleaned}`; // never "ag--"
+    // Label matches the sprite symbol id, which is what consumers reference.
+    const name = base;
     const { w: iw, h: ih } = getIntrinsicSize(raw);
     const dataUri = `data:image/svg+xml;utf8,${encodeURIComponent(raw)}`;
     icons.push({ path: p, name, dataUri, iw, ih });
