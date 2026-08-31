@@ -74,7 +74,12 @@ function extractSvgParts(svg) {
     viewBox = Number.isFinite(w) && Number.isFinite(h) ? `0 0 ${w} ${h}` : '0 0 24 24';
   }
 
-  return { inner, viewBox };
+  // Only viewBox and fill survive onto the <symbol>. fill carries the source's
+  // `currentColor`, without which sprited icons would fall back to black.
+  const fillMatch = openAttrs.match(/\bfill\s*=\s*["']([^"']+)["']/i);
+  const fill = fillMatch ? fillMatch[1] : null;
+
+  return { inner, viewBox, fill };
 }
 
 function ensureUniqueIds(base, existing) {
@@ -104,9 +109,10 @@ async function build(inDir, outDir, spriteName) {
     const id = ensureUniqueIds(baseName, usedIds);
 
     try {
-      const { inner, viewBox } = extractSvgParts(raw);
+      const { inner, viewBox, fill } = extractSvgParts(raw);
       const cleanedInner = inner.replace(/\r?\n/g, ' ').replace(/\s{2,}/g, ' ').trim();
-      symbols.push(`<symbol id="${id}" viewBox="${viewBox}">${cleanedInner}</symbol>`);
+      const fillAttr = fill ? ` fill="${fill}"` : '';
+      symbols.push(`<symbol id="${id}" viewBox="${viewBox}"${fillAttr}>${cleanedInner}</symbol>`);
       manifest.push({ id, name: baseName, file: path.basename(file), viewBox });
     } catch (err) {
       console.warn(`Skipping ${file}: ${err.message}`);

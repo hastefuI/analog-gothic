@@ -2,13 +2,27 @@
 :root {
   --cell: 112px;
   --gap: 16px;
+  --bg: #fff;
   --fg: #111;
   --muted: #666;
+  --line: #ddd;
   font-family: system-ui, sans-serif;
+}
+
+/* Icons take their color from `currentColor`, so theming the page themes
+   the whole set. Nothing here touches the SVGs themselves. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117;
+    --fg: #e6edf3;
+    --muted: #9198a1;
+    --line: #30363d;
+  }
 }
 
 body {
   margin: 24px;
+  background: var(--bg);
   color: var(--fg);
 }
 
@@ -24,7 +38,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--line);
   border-radius: 12px;
 }
 
@@ -37,6 +51,7 @@ body {
   width: 100%;
   height: 100%;
   display: block;
+  color: var(--fg);
 }
 
 .caption {
