@@ -21,6 +21,8 @@ jobs:
           cache: npm
           registry-url: https://registry.npmjs.org
 
+      - run: npm install -g npm@latest
+
       - run: npm ci
 
       - name: Check tag matches package.json version
@@ -33,8 +35,6 @@ jobs:
 
       - name: Publish to npm
         run: make publish NPM_FLAGS=--provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub release
         env:

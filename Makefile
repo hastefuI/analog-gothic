@@ -123,7 +123,7 @@ release: check-signing check-clean ## Cut a signed release: make release VERSION
 	@echo "Tagged v$(VERSION). Publish with:"
 	@echo "  git push origin main --follow-tags"
 
-publish: verify ## Publish to npm (CI uses this; needs NPM_TOKEN)
+publish: verify ## Publish to npm (CI uses this via the OIDC trusted publisher)
 	$(NPM) publish --access public $(NPM_FLAGS)
 
 # Docker entry points, for working without Node.js on the host. Release
