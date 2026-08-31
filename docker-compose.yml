@@ -1,13 +1,6 @@
 # Docker entry points for the icon kit.
-#
-#   docker compose run --rm cli make verify
-#   docker compose up dev
-#
-# The Makefile wraps both as docker-* targets.
 
 services:
-  # One-shot build commands. The anonymous volume on node_modules keeps the
-  # image's Linux-built dependencies from being shadowed by the bind mount.
   cli:
     build: .
     image: analog-gothic-dev
@@ -16,7 +9,6 @@ services:
       - /app/node_modules
     command: make help
 
-  # Live preview on http://localhost:3000, rebuilt whenever icons/ changes.
   dev:
     build: .
     image: analog-gothic-dev
