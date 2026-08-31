@@ -23,16 +23,54 @@ When reporting a bug, ensure steps to reproduce the issue are included.
 
 ## Build requirements
 
-- Node.js 24 or newer
-- `make`
+Either Node.js 24 or newer with `make`, or Docker. Both run the same
+targets, so pick whichever suits your machine.
 
-Install dependencies from the lockfile:
+With Node installed locally, install dependencies from the lockfile:
 
 ```sh
 make install
 ```
 
+With Docker instead, build the image once:
+
+```sh
+make docker-image
+```
+
 Run `make` on its own to list every available target.
+
+### Working in Docker
+
+Every build target has a `docker-` prefixed equivalent that runs the same
+command inside the container, so nothing needs to be installed on the host
+except Docker itself:
+
+```sh
+make docker-add         # normalize and optimize stage/ into icons/
+make docker-artifacts   # regenerate the sprite and kit sheet
+make docker-build       # optimize icons/, then regenerate everything
+make docker-verify      # confirm the committed artifacts are in sync
+make docker-preview     # serve the preview on http://localhost:3000
+make docker-shell       # open a shell in the build container
+```
+
+`make docker-preview` runs a live-reload server. Editing anything in
+`icons/` rebuilds the sprite and refreshes the browser automatically. Stop
+it with Ctrl+C, or `docker compose down` if it was started detached.
+
+The repository is bind mounted into the container, so generated files
+appear on the host as usual and belong to your user rather than root.
+
+If `make` is unavailable on the host, call Compose directly:
+
+```sh
+docker compose run --rm cli make verify
+docker compose up dev
+```
+
+Release targets are deliberately absent from the container. Signing a
+release needs the maintainer's GPG key, so run `make release` on the host.
 
 ## Adding an icon
 

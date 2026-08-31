@@ -1,0 +1,10 @@
+.git
+.github
+node_modules
+dist
+stage
+icons
+*.svg
+*.log
+*.tgz
+.DS_Store

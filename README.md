@@ -52,6 +52,15 @@ make verify      # fail if the committed artifacts are stale
 make preview     # build dist/ and open it in a browser
 ```
 
+No Node.js on your machine? Every target has a Docker equivalent:
+
+```sh
+make docker-image    # build the image once
+make docker-build    # optimize icons/ and regenerate artifacts
+make docker-verify   # confirm the committed artifacts are in sync
+make docker-preview  # live-reload preview on http://localhost:3000
+```
+
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full icon workflow and
 release process.
 

@@ -9,8 +9,9 @@
 # Cutting a release:
 #   make release VERSION=1.2.0   then push, and CI publishes.
 
-NODE ?= node
-NPM  ?= npm
+NODE    ?= node
+NPM     ?= npm
+COMPOSE ?= docker compose
 
 # Extra flags for `npm publish`. CI passes --provenance.
 NPM_FLAGS ?=
@@ -35,12 +36,14 @@ SIGNING_KEY ?= $(shell git config --get user.signingkey)
 GIT_SIGN     = $(if $(SIGNING_KEY),-c user.signingkey=$(SIGNING_KEY) -c gpg.format=openpgp,)
 
 .DEFAULT_GOAL := help
-.PHONY: help install add optimize sprite kit artifacts build preview verify clean release publish check-signing check-clean
+.PHONY: help install add optimize sprite kit artifacts build preview watch verify clean release publish \
+	check-signing check-clean docker-image docker-add docker-artifacts docker-build \
+	docker-verify docker-preview docker-shell
 
 help: ## Show available targets
 	@printf 'Analog Gothic\n\n'
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
-		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
+		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-17s\033[0m %s\n", $$1, $$2}'
 
 install: ## Install dependencies from the lockfile
 	$(NPM) ci
@@ -67,6 +70,10 @@ build: optimize artifacts ## Optimize icons/, then regenerate every artifact
 
 preview: sprite ## Build the dist/ preview and print where to open it
 	@echo "Open $(DIST_DIR)/index.html"
+
+watch: ## Rebuild the dist/ preview whenever icons/ changes
+	$(NODE) scripts/build-sprite.mjs --in $(ICONS_DIR) --out $(DIST_DIR) \
+		--sprite-name $(SPRITE) --watch
 
 verify: ## Fail if the committed artifacts do not match icons/
 	@tmp=$$(mktemp -d); \
@@ -118,3 +125,28 @@ release: check-signing check-clean ## Cut a signed release: make release VERSION
 
 publish: verify ## Publish to npm (CI uses this; needs NPM_TOKEN)
 	$(NPM) publish --access public $(NPM_FLAGS)
+
+# Docker entry points, for working without Node.js on the host. Release
+# targets are intentionally absent: signing needs the maintainer's GPG key,
+# so run `make release` on the host.
+
+docker-image: ## Build the Docker image
+	$(COMPOSE) build
+
+docker-add: ## Run `make add` in Docker
+	$(COMPOSE) run --rm cli make add
+
+docker-artifacts: ## Run `make artifacts` in Docker
+	$(COMPOSE) run --rm cli make artifacts
+
+docker-build: ## Run `make build` in Docker
+	$(COMPOSE) run --rm cli make build
+
+docker-verify: ## Run `make verify` in Docker
+	$(COMPOSE) run --rm cli make verify
+
+docker-preview: ## Serve the live-reload preview on http://localhost:3000
+	$(COMPOSE) up dev
+
+docker-shell: ## Open a shell in the build container
+	$(COMPOSE) run --rm cli sh
