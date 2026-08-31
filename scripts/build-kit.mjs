@@ -158,17 +158,20 @@ async function main() {
     const iconW = f.iw * scale;
     const iconH = f.ih * scale;
 
-    // Vertically center (icon + 4px + label) within effH
-    const groupH = iconH + 4 + labelH;
+    // Reserve a fixed icon band of iconTarget so every cell in a row shares
+    // one baseline. Measuring the band from this icon's own height instead
+    // would float short icons upward when the group is centered.
+    const groupH = iconTarget + 4 + labelH;
     const groupTop = cellY + Math.max(0, (effH - groupH) / 2);
+    const iconBottom = groupTop + iconTarget;
 
-    // Icon position
+    // Icon position: centered horizontally, bottom aligned to the band
     const iconLeft = cellX + (cellSize - iconW) / 2;
-    const iconTop  = groupTop;
+    const iconTop  = iconBottom - iconH;
 
-    // Label position: 4px below icon, centered
+    // Label position: 4px below the shared baseline, centered
     const labelX = cellX + cellSize / 2;
-    const labelY = iconTop + iconH + 4;
+    const labelY = iconBottom + 4;
 
     // Optional visible outline using effH
     const rect = showGrid
