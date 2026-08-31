@@ -1,6 +1,6 @@
 {
   "name": "analog-gothic",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Analog Gothic is a free, open-source 1-bit pixel icon kit inspired by medieval symbolism and nature.",
   "scripts": {
     "test": "make verify",
