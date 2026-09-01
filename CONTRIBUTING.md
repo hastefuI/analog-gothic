@@ -28,14 +28,14 @@ targets, so pick whichever suits your machine.
 
 With Node installed locally, install dependencies from the lockfile:
 
-```sh
-make install
+```bash
+$ make install
 ```
 
 With Docker instead, build the image once:
 
-```sh
-make docker-image
+```bash
+$ make docker-image
 ```
 
 Run `make` on its own to list every available target.
@@ -46,13 +46,13 @@ Every build target has a `docker-` prefixed equivalent that runs the same
 command inside the container, so nothing needs to be installed on the host
 except Docker itself:
 
-```sh
-make docker-add         # normalize and optimize stage/ into icons/
-make docker-artifacts   # regenerate the sprite and kit sheet
-make docker-build       # optimize icons/, then regenerate everything
-make docker-verify      # confirm the committed artifacts are in sync
-make docker-preview     # serve the preview on http://localhost:3000
-make docker-shell       # open a shell in the build container
+```bash
+$ make docker-add         # normalize and optimize stage/ into icons/
+$ make docker-artifacts   # regenerate the sprite and kit sheet
+$ make docker-build       # optimize icons/, then regenerate everything
+$ make docker-verify      # confirm the committed artifacts are in sync
+$ make docker-preview     # serve the preview on http://localhost:3000
+$ make docker-shell       # open a shell in the build container
 ```
 
 `make docker-preview` runs a live-reload server. Editing anything in
@@ -64,9 +64,9 @@ appear on the host as usual and belong to your user rather than root.
 
 If `make` is unavailable on the host, call Compose directly:
 
-```sh
-docker compose run --rm cli make verify
-docker compose up dev
+```bash
+$ docker compose run --rm cli make verify
+$ docker compose up dev
 ```
 
 Release targets are deliberately absent from the container. Signing a
@@ -150,9 +150,9 @@ Analog Gothic is maintained under [semantic versioning guidelines](https://semve
 
 Cut a release from a clean `main`:
 
-```sh
-make release VERSION=1.2.0
-git push origin main --follow-tags
+```bash
+$ make release VERSION=X.Y.Z
+$ git push origin main --follow-tags
 ```
 
 `make release` rebuilds every artifact, verifies it is in sync, sets the
