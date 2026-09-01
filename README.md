@@ -35,7 +35,7 @@ SVG sprite:
 Inline SVG:
 ```html
 <!-- Inline SVG usage -->
-<svg class="ag-icon ag-icon-book" fill="currentColor" viewBox="0 0 1024 1024" aria-hidden="true">
+<svg class="ag-icon ag-icon-book" fill="currentColor" viewBox="0 0 64 64" aria-hidden="true">
   ...
 </svg>
 ```

@@ -62,6 +62,58 @@ function getIntrinsicSize(svg) {
   return { w: 100, h: 100 };
 }
 
+function getInkBox(svg) {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  const mark = (x, y) => {
+    if (x < x0) x0 = x; if (x > x1) x1 = x;
+    if (y < y0) y0 = y; if (y > y1) y1 = y;
+  };
+
+  for (const m of svg.matchAll(/\sd="([^"]+)"/g)) {
+    const t = m[1].match(/[A-Za-z]|-?\d*\.?\d+(?:[eE][-+]?\d+)?/g) || [];
+    let c = null, x = 0, y = 0, sx = 0, sy = 0, i = 0;
+    const n = () => Number(t[i++]);
+    while (i < t.length) {
+      if (/[A-Za-z]/.test(t[i])) { c = t[i]; i++; }
+      if (c == null) { i++; continue; }
+      if (c === 'Z' || c === 'z') { x = sx; y = sy; c = null; continue; }
+      switch (c) {
+        case 'M': x = n(); y = n(); sx = x; sy = y; c = 'L'; break;
+        case 'm': x += n(); y += n(); sx = x; sy = y; c = 'l'; break;
+        case 'L': x = n(); y = n(); break;
+        case 'l': x += n(); y += n(); break;
+        case 'H': x = n(); break;
+        case 'h': x += n(); break;
+        case 'V': y = n(); break;
+        case 'v': y += n(); break;
+        case 'C': n(); n(); n(); n(); x = n(); y = n(); break;
+        case 'c': n(); n(); n(); n(); x += n(); y += n(); break;
+        case 'S': case 'Q': n(); n(); x = n(); y = n(); break;
+        case 's': case 'q': n(); n(); x += n(); y += n(); break;
+        case 'T': x = n(); y = n(); break;
+        case 't': x += n(); y += n(); break;
+        case 'A': n(); n(); n(); n(); n(); x = n(); y = n(); break;
+        case 'a': n(); n(); n(); n(); n(); x += n(); y += n(); break;
+        default: i++; continue;
+      }
+      mark(x, y);
+    }
+  }
+
+  for (const m of svg.matchAll(/<rect\b([^>]*?)\/?>/g)) {
+    const at = m[1];
+    const v = (k) => {
+      const q = at.match(new RegExp(`\\b${k}\\s*=\\s*"([^"]+)"`));
+      return q ? Number(q[1]) : 0;
+    };
+    const w = v('width'), h = v('height');
+    if (w > 0 && h > 0) { mark(v('x'), v('y')); mark(v('x') + w, v('y') + h); }
+  }
+
+  if (!Number.isFinite(x0) || x1 <= x0 || y1 <= y0) return null;
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+
 function escapeXml(t) {
   return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -114,9 +166,14 @@ async function main() {
     const base = kebabBase(p);
     // Label matches the sprite symbol id, which is what consumers reference.
     const name = base;
-    const { w: iw, h: ih } = getIntrinsicSize(raw);
-    const dataUri = `data:image/svg+xml;utf8,${encodeURIComponent(raw)}`;
-    icons.push({ path: p, name, dataUri, iw, ih });
+    // Scale by the artwork, not the canvas. Every icon shares one square
+    // viewBox, so sizing off it would render each glyph at whatever fraction
+    // of the canvas it happens to occupy and the sheet would look ragged.
+    const { w: vw, h: vh } = getIntrinsicSize(raw);
+    const box = getInkBox(raw) ?? { x: 0, y: 0, w: vw, h: vh };
+    const cropped = raw.replace(/viewBox\s*=\s*"[^"]*"/i, `viewBox="${box.x} ${box.y} ${box.w} ${box.h}"`);
+    const dataUri = `data:image/svg+xml;utf8,${encodeURIComponent(cropped)}`;
+    icons.push({ path: p, name, dataUri, iw: box.w, ih: box.h });
   }
 
   // Typography & sizing inside each row
