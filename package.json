@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/hastefuI/analog-gothic#readme",
   "devDependencies": {
+    "browser-sync": "^3.0.4",
     "svgo": "^4.1.0"
   },
   "engines": {

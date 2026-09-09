@@ -4,8 +4,6 @@ FROM node:24-alpine
 
 RUN apk add --no-cache make
 
-RUN npm install -g browser-sync
-
 RUN mkdir -p /app && chown node:node /app
 WORKDIR /app
 USER node

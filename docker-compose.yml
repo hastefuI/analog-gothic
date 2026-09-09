@@ -17,4 +17,4 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: sh -c "browser-sync start --server dist --files 'dist/**/*' --port 3000 --no-open & make watch"
+    command: sh -c "npx browser-sync start --server dist --files 'dist/**/*' --port 3000 --no-open & make watch"
